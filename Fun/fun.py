@@ -5,6 +5,10 @@ from pywebio.input import *
 from pywebio.output import *
 from pywebio.session import *
 import random
+from googletrans import Translator
+
+# Initialize the translator
+translator = Translator()
 
 # Function to fetch Salat times
 def get_salat_times():
@@ -42,15 +46,18 @@ def get_bangla_joke():
     put_html('<h3>Bangla Joke</h3>', scope="content")
     style(put_text(joke, scope="content"), 'color:green; font-size: 24px')
 
-# Fun Fact Generator
+# Fun Fact Generator with Bangla Translation
 def get_fun_fact():
     url = "https://uselessfacts.jsph.pl/random.json?language=en"
     response = requests.get(url)
     data = json.loads(response.text)
     useless_fact = data['text']
     
+    # Translate the fact into Bangla
+    translated_fact = translator.translate(useless_fact, src='en', dest='bn').text
+    
     put_html('<h3>Fun Fact</h3>', scope="content")
-    style(put_text(useless_fact, scope="content"), 'color:blue; font-size: 24px')
+    style(put_text(translated_fact, scope="content"), 'color:blue; font-size: 24px')
 
 # Main menu
 def main_menu():
